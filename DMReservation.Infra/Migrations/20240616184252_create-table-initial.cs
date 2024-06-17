@@ -15,15 +15,15 @@ namespace DMReservation.Infra.Migrations
                 name: "motorcycle",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     year = table.Column<short>(type: "smallint", nullable: false),
-                    model = table.Column<string>(type: "varchar", maxLength: 50, nullable: false),
-                    licenseplate = table.Column<string>(type: "varchar", maxLength: 10, nullable: false)
+                    model = table.Column<string>(type: "varchar(50)", nullable: false),
+                    licenseplate = table.Column<string>(type: "varchar(10)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_motorcycle_id", x => x.Id);
+                    table.PrimaryKey("pk_motorcycle_id", x => x.id);
                     table.UniqueConstraint("uk_motorcycle_licenseplate", x => x.licenseplate);
                 });
         }

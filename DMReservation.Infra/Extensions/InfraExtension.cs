@@ -29,6 +29,7 @@ namespace DMReservation.Infra.Extensions
         {
             services.AddDbContext<DataContext>(ServiceLifetime.Transient);
 
+            services.AddTransient<IDeliveryManRepository, DeliveryManRepository>();
             services.AddTransient<IMotorcycleRepository, MotorcycleRepository>();
 
             services.AddSingleton(Mapper());

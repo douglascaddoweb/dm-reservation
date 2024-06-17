@@ -1,4 +1,5 @@
-﻿using DMReservation.Domain.Settings;
+﻿using DMReservation.Domain.Entities;
+using DMReservation.Domain.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -6,8 +7,9 @@ namespace DMReservation.Infra.Context
 {
     public class DataContext : DbContext
     {
-        //public DbSet<Pessoa> Pessoas { get; set; }
-        
+        public DbSet<Motorcycle> Motorcycles { get; set; }
+        public DbSet<DeliveryMan> DeliveryMen { get; set; }
+
 
         public DataContext(DbContextOptions option) : base(option)
         {

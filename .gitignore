@@ -134,3 +134,4 @@ _NCrunch*
 
 .vs
 DMReservation.API/appsettings.development.json
+DMReservation.API/Images/*

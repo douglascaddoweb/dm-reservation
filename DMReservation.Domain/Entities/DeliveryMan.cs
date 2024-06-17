@@ -27,5 +27,7 @@ namespace DMReservation.Domain.Entities
             TypeCnh = typecnh;
         }
 
+        public void SetImage(string image) => Image = image;
+
     }
 }

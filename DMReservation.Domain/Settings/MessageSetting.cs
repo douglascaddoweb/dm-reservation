@@ -9,5 +9,7 @@
         public static string CnhInvalid = "The CNH is invalid.";
         public static string TypeCnhInvalid = "The Type CNH is invalid.";
         public static string RegistryNotFound = "Registry does not found.";
+        public static string FormatImageInvalid = "Format image invalid.";
+        public static string UploadImageError = "There was an error uploading file.";
     }
 }

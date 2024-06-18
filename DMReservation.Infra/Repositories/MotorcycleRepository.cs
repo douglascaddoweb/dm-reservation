@@ -29,10 +29,6 @@ namespace DMReservation.Infra.Repositories
 
         public async Task<Motorcycle> GetMotorcycleAvailableAsync()
         {
-                //await _entities//.Include(i => i.Rentals.Where(w => w.Status == StatusRental.Available))
-                //.OrderByDescending(o => o.Id)    
-                //.Where(w => w.Rentals.Where(w => w.Status == StatusRental.Available).Any() || w.Rentals == null)
-                //.FirstOrDefaultAsync();
 
             return await _context.Motorcycles.FromSqlRaw("select m.* from motorcycle m left join rental r on m.id = r.id where r.id is null or r.status = 2 order by m.id asc").FirstOrDefaultAsync();
         }

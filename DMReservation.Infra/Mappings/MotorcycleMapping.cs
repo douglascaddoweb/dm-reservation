@@ -12,9 +12,12 @@ namespace DMReservation.Infra.Mappings
 
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Id).HasColumnName("id").HasColumnType("integer");
             builder.Property(x => x.Year).HasColumnName("year").HasColumnType("smallint");
             builder.Property(x => x.Model).HasColumnName("model").HasColumnType("varchar(50)");
             builder.Property(x => x.LicensePlate).HasColumnName("licenseplate").HasColumnType("varchar(10)");
+
+            builder.HasMany(w => w.Rentals).WithOne(w => w.Motorcycle).HasForeignKey(f => f.MotorcycleId);
         }
     }
 }

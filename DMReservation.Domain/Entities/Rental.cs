@@ -46,6 +46,7 @@ namespace DMReservation.Domain.Entities
             DateStart = dateStart;
             DateForecastFinish = dateFinish;
             Price = rentalPlan.Price * rentalPlan.Days;
+            Status = StatusRental.Leased;
 
             Motorcycle = motorcycle;
             DeliveryMan = deliveryMan;

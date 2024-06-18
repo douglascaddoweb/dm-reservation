@@ -16,6 +16,7 @@ namespace DMReservation.Application.Extensions
         {
             services.AddTransient<ICreateDeliveryMan, CreateDeliveryMan>();
             services.AddTransient<ICreateMotorcycle, CreateMotorcycle>();
+            services.AddTransient<IRentalMotorcycle, RentalMotorcycle>();
             services.AddTransient<ISearchMotorcycle, SearchMotorcycle>();
             services.AddTransient<ISimulateRentalMotorcycle, SimulateRentalMotorcycle>();
             services.AddTransient<IUpdateMotorcycle, UpdateMotorcycle>();

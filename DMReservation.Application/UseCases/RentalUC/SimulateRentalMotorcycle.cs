@@ -9,13 +9,10 @@ namespace DMReservation.Application.UseCases.RentalUC
     public class SimulateRentalMotorcycle : ISimulateRentalMotorcycle
     {
         private readonly IRentalPlanRepository _planRepository;
-        private readonly IDeliveryManRepository _deliveryManRepository;
 
         public SimulateRentalMotorcycle(
-            IDeliveryManRepository deliveryManRepository,
             IRentalPlanRepository planRepository)
         {
-            _deliveryManRepository = deliveryManRepository;
             _planRepository = planRepository;
         }
 
@@ -33,6 +30,7 @@ namespace DMReservation.Application.UseCases.RentalUC
 
             Rental rental = new Rental(rentalPlan, DateTime.Now.AddDays(1), rentalMotorcycle.DateFinish);
             rental.CalculatePrice(rentalMotorcycle.DateFinish);
+
             return new DetailSimulateRentalDto(rental.DateForecastFinish, rental.DateStart, rental.Total);
         }
     }

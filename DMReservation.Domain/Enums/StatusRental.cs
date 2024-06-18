@@ -6,7 +6,7 @@ namespace DMReservation.Domain.Enums
     {
         [Description("Leased")]
         Leased = 1,
-        [Description("Delivered")]
-        Delivered = 2
+        [Description("Available")]
+        Available = 2
     }
 }

@@ -17,7 +17,7 @@ namespace DMReservation.Infra.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    idmotorcyle = table.Column<int>(type: "integer", nullable: false),
+                    idmotorcycle = table.Column<int>(type: "integer", nullable: false),
                     idrentalplan = table.Column<short>(type: "smallint", nullable: false),
                     iddeliveryman = table.Column<int>(type: "integer", nullable: false),
                     datestart = table.Column<DateTime>(type: "timestamp", nullable: false),
@@ -34,7 +34,7 @@ namespace DMReservation.Infra.Migrations
                 {
                     table.PrimaryKey("pk_rental_id", x => x.id);
 
-                    table.ForeignKey("fk_rental_idmotorcycle", x => x.idmotorcyle, "motorcycle", "id");
+                    table.ForeignKey("fk_rental_idmotorcycle", x => x.idmotorcycle, "motorcycle", "id");
                     table.ForeignKey("fk_rental_idrentalplan", x => x.idrentalplan, "rentalplan", "id");
                     table.ForeignKey("fk_rental_iddeliveryman", x => x.iddeliveryman, "deliveryman", "id");
                 });

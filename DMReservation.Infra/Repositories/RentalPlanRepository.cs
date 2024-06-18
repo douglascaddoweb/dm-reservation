@@ -13,7 +13,12 @@ namespace DMReservation.Infra.Repositories
 
         public async Task<RentalPlan> GetRentalPlanAsync(int days)
         {
-            return await _entities.OrderByDescending(o => o.Days).FirstOrDefaultAsync(w => w.Days < days);
+            return await _entities.OrderBy(o => o.Days).FirstOrDefaultAsync(w => w.Days > days || w.Days < days);
+        }
+
+        public async Task<RentalPlan> GetMaxDaysPlanAsync()
+        {
+            return (await _entities.ToListAsync()).MaxBy(w => w.Days);
         }
     }
 }

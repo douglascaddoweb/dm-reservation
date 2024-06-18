@@ -8,6 +8,8 @@
 
         public string LicensePlate { get; private set; }
 
+        public virtual List<Rental> Rentals { get; private set; }
+
         protected  Motorcycle()
         {
             

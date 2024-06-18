@@ -10,9 +10,11 @@ namespace DMReservation.API.Controllers
     public class RentalController : ControllerBase
     {
         private readonly ISimulateRentalMotorcycle _simulateRentalMotorcycle;
+        private readonly IRentalMotorcycle _rentalMotorcycle;
 
-        public RentalController(ISimulateRentalMotorcycle simulateRentalMotorcycle)
+        public RentalController(IRentalMotorcycle rentalMotorcycle, ISimulateRentalMotorcycle simulateRentalMotorcycle)
         {
+            _rentalMotorcycle = rentalMotorcycle;
             _simulateRentalMotorcycle = simulateRentalMotorcycle;
         }
 
@@ -25,6 +27,25 @@ namespace DMReservation.API.Controllers
 
 
                 DetailSimulateRentalDto detail =  await _simulateRentalMotorcycle.ExecuteAsync(new RentalMotorcycleDto(model.IdDeliveryMan, model.DateFinish));
+
+                return StatusCode(StatusCodes.Status200OK, detail);
+
+            } catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+
+        }
+
+        [HttpPost("rental")]
+        public async Task<IActionResult> Rental(SimulateRentalModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return StatusCode(StatusCodes.Status400BadRequest, ModelState);
+
+
+                DetailSimulateRentalDto detail =  await _rentalMotorcycle.ExecuteAsync(new RentalMotorcycleDto(model.IdDeliveryMan, model.DateFinish));
 
                 return StatusCode(StatusCodes.Status200OK, detail);
 

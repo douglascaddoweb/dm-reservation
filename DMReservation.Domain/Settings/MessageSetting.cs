@@ -11,5 +11,6 @@
         public static string RegistryNotFound = "Registry does not found.";
         public static string FormatImageInvalid = "Format image invalid.";
         public static string UploadImageError = "There was an error uploading file.";
+        public static string DateFinishInvalid = "Date finish should be more than today.";
     }
 }

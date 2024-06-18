@@ -19,6 +19,7 @@ namespace DMReservation.Infra.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.LogTo(Console.WriteLine, (_, level) => level == LogLevel.Information)
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .UseNpgsql(GeneralSetting.ConnectionString);
         }
 

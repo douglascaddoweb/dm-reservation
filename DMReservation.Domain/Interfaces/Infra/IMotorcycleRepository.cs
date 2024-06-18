@@ -12,5 +12,7 @@ namespace DMReservation.Domain.Interfaces.Infra
         Task<List<Motorcycle>> GetAllWithLicensePlateAsync(string licensePlate);
 
         Task<bool> VerifyMotorcycleExistAsync(string licenseplate);
+
+        Task<Motorcycle> GetMotorcycleAvailableAsync();
     }
 }

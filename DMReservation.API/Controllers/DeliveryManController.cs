@@ -19,7 +19,12 @@ namespace DMReservation.API.Controllers
 
         }
 
-        [HttpPost]
+        /// <summary>
+        /// Cria um cadastro de entregador
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost("create-deliveryman")]
         public async Task<IActionResult> Post(CreateDeliveryManModel model)
         {
             try
@@ -41,6 +46,11 @@ namespace DMReservation.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Envia imagem da CNH do entregador
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("upload")]
         public async Task<IActionResult> Upload(UploadCnhModel model)
         {

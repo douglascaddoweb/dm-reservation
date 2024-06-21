@@ -11,11 +11,20 @@ namespace DMReservation.Infra.Repositories
         {
         }
 
+        /// <summary>
+        /// Retorna um plano de locação de acordo com a quantidade de dias
+        /// </summary>
+        /// <param name="days"></param>
+        /// <returns></returns>
         public async Task<RentalPlan> GetRentalPlanAsync(int days)
         {
             return await _entities.OrderBy(o => o.Days).FirstOrDefaultAsync(w => w.Days > days || w.Days < days);
         }
 
+        /// <summary>
+        /// Retora um plano de locação com a maior quantidade de dias disponivel
+        /// </summary>
+        /// <returns></returns>
         public async Task<RentalPlan> GetMaxDaysPlanAsync()
         {
             return (await _entities.ToListAsync()).MaxBy(w => w.Days);

@@ -18,6 +18,11 @@ namespace DMReservation.Application.UseCases.MotorcycleUC
             _motorcycleService = motorcycleService;
         }
 
+        /// <summary>
+        /// Cria o cadastro de uma motocicleta
+        /// </summary>
+        /// <param name="motor"></param>
+        /// <returns></returns>
         public async Task ExecuteAsync(CreateMotorcycleDto motor)
         {
             try

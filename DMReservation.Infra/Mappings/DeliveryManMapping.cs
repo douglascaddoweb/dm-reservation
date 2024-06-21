@@ -34,6 +34,9 @@ namespace DMReservation.Infra.Mappings
                 t.Property(x => x.Value).HasColumnName("cnpj").HasColumnType("varchar(20)");
                 t.Ignore(x => x.IsValid);
             });
+
+            builder.HasMany(d => d.Rental).WithOne(d => d.DeliveryMan).HasForeignKey(f => f.DeliveryManId);
+            builder.HasMany(d => d.OrderDeliveryMan).WithOne(d => d.DeliveryMan).HasForeignKey(f => f.DeliveryManId);
         }
     }
 }

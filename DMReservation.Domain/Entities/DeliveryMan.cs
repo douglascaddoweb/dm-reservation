@@ -16,6 +16,10 @@ namespace DMReservation.Domain.Entities
 
         public string? Image { get; private set; }
 
+        public virtual List<OrderDeliveryMan> OrderDeliveryMan { get; set; }
+
+        public virtual List<Rental> Rental { get; set; }
+
         protected DeliveryMan() { }
 
         public DeliveryMan(string name, Cnpj cnpj, DateTime birthdate, Cnh cnh, TypeCnh typecnh)

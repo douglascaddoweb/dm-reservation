@@ -17,6 +17,11 @@ namespace DMReservation.Application.UseCases.MotorcycleUC
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Realiza a busca por motocicletas cadastradas podendo filtrar pela placa
+        /// </summary>
+        /// <param name="plate"></param>
+        /// <returns></returns>
         public async Task<List<ListMotorcycleDto>> ExecuteAsync(string plate) 
         {
             List<Motorcycle> motors = await _motorcycleRepository.GetAllWithLicensePlateAsync(plate);

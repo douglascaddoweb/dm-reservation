@@ -13,18 +13,25 @@ namespace DMReservation.API.Controllers
         private readonly ISearchMotorcycle _searchMotorcycle;
         private readonly ICreateMotorcycle _createMotorcycle;
         private readonly IUpdateMotorcycle _updateMotorcycle;
+        private readonly IRemoveMotorcycle _removeMotorcycle;
 
         public MotorcycleController(ICreateMotorcycle createMotorcycle, 
             ISearchMotorcycle searchMotorcycle,
-            IUpdateMotorcycle updateMotorcycle)
+            IUpdateMotorcycle updateMotorcycle,
+            IRemoveMotorcycle removeMotorcycle)
         {
             _createMotorcycle = createMotorcycle;
             _searchMotorcycle = searchMotorcycle;
             _updateMotorcycle = updateMotorcycle;
+            _removeMotorcycle = removeMotorcycle;
         }
 
-
-        [HttpGet(Name = "search-motorcycle")]
+        /// <summary>
+        /// Retorna lista de motocicletas cadastradas podendo filtrar pela placa da motocicleta
+        /// </summary>
+        /// <param name="plate"></param>
+        /// <returns></returns>
+        [HttpGet("search")]
         public async Task<IActionResult> GetMotorcycle(string? plate)
         {
             try
@@ -39,7 +46,12 @@ namespace DMReservation.API.Controllers
             }
         }
 
-        [HttpPost(Name = "motorcycle")]
+        /// <summary>
+        /// Cria o cadastro de uma motocicleta
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost("create")]
         public async Task<IActionResult> Post(CreateMotorcycle model)
         {
             try
@@ -65,7 +77,13 @@ namespace DMReservation.API.Controllers
             }
         }
 
-        [HttpPatch(Name = "motorcycle")]
+        /// <summary>
+        /// Atualiza o cadastro da motocicleta apenas a Placa
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPatch("update")]
         public async Task<IActionResult> Patch(UpdateMotorcycleModel model, int id)
         {
             try
@@ -90,7 +108,29 @@ namespace DMReservation.API.Controllers
             }
         }
 
-        //TODO: need to create exclude method 
+        
+        /// <summary>
+        /// Exclui uma motocicleta
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _removeMotorcycle.ExecuteAsync(id);
+
+                return StatusCode(StatusCodes.Status204NoContent);
+
+            } catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+        }
+
+
 
     }
 }

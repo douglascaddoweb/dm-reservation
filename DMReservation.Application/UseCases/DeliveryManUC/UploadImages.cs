@@ -19,6 +19,13 @@ namespace DMReservation.Application.UseCases.DeliveryManUC
             _deliveryManRepository = deliveryManRepository;
         }
 
+        /// <summary>
+        /// Faz o upload da imagem da CNH enviada
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task ExecuteAsync(IFormFile file, int id)
         {
             string format = GetFileFormat(file.FileName);
@@ -42,7 +49,13 @@ namespace DMReservation.Application.UseCases.DeliveryManUC
             await _deliveryManRepository.CommitAsync();
         }
 
-        public string GetFileFormat(string filename)
+        /// <summary>
+        /// Retorna o formato da imagem
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private string GetFileFormat(string filename)
         {
 
             string format = filename.Split('.').Last();
@@ -51,8 +64,12 @@ namespace DMReservation.Application.UseCases.DeliveryManUC
             return format;
         }
 
-
-        public byte[] ConvertFileToByteArray(IFormFile file)
+        /// <summary>
+        /// Converte o arquivo para array de bytes
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        private byte[] ConvertFileToByteArray(IFormFile file)
         {
             using(MemoryStream memoryStream = new MemoryStream())
             {
@@ -61,12 +78,22 @@ namespace DMReservation.Application.UseCases.DeliveryManUC
             }
         }
 
-        public string CreateFilePath(string filename)
+        /// <summary>
+        /// Salva a imagem na pasta e diretorios definidos no appsettings
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        private string CreateFilePath(string filename)
         {
             return Path.Combine(Directory.GetCurrentDirectory(), _configuration["Directory:Images"], filename);
         }
 
-        public bool VerifyExistsImage(string filename)
+        /// <summary>
+        /// Verifica se a imagem existe na pasta de imagens
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        private bool VerifyExistsImage(string filename)
         {
             return File.Exists(filename);
         }

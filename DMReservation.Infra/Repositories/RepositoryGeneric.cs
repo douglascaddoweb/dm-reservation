@@ -44,5 +44,11 @@ namespace DMReservation.Infra.Repositories
             _context.Entry(entity).State = EntityState.Modified;
             _context.Update(entity);
         }
+
+        public void Remove(TEntity entity)
+        {
+            _context.Entry(entity).State = EntityState.Deleted;
+            _context.Remove(entity);
+        }
     }
 }

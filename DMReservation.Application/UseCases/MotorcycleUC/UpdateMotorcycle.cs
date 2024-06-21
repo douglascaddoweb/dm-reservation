@@ -18,7 +18,12 @@ namespace DMReservation.Application.UseCases.MotorcycleUC
             _motorcycleService = motorcycleService;
         }
 
-
+        /// <summary>
+        /// Atualiza a motocicleta somente a placa
+        /// </summary>
+        /// <param name="motor"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task ExecuteAsync(UpdateMotorcycleDto motor)
         {
             if (await _motorcycleService.GetMotorcycleWithPlate(motor.LicensePlate)) throw new Exception(MessageSetting.MotorcycleRegistered);

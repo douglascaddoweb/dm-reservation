@@ -6,6 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 GeneralSetting.ConnectionString = builder.Configuration.GetConnectionString("Default");
+GeneralSetting.HostRabbit = builder.Configuration.GetSection("Rabbit:Host").Value;
+GeneralSetting.UserName = builder.Configuration.GetSection("Rabbit:UserName").Value;
+GeneralSetting.Password = builder.Configuration.GetSection("Rabbit:Password").Value;
+GeneralSetting.Port = Convert.ToInt32(builder.Configuration.GetSection("Rabbit:Port").Value);
 
 builder.Services.AddInfraExtensions();
 builder.Services.AddApplicationExtensions();

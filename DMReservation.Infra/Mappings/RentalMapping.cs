@@ -26,7 +26,7 @@ namespace DMReservation.Infra.Mappings
             builder.Property(x => x.Total).HasColumnName("total").HasColumnType("numeric(18,2)");
 
             builder.HasOne(x => x.Motorcycle).WithMany(f => f.Rentals).HasForeignKey(f => f.MotorcycleId);
-            builder.HasOne(x => x.DeliveryMan).WithMany().HasForeignKey(f => f.DeliveryManId);
+            builder.HasOne(x => x.DeliveryMan).WithMany(f => f.Rental).HasForeignKey(f => f.DeliveryManId);
             builder.HasOne(x => x.RentalPlan).WithMany().HasForeignKey(f => f.RentalPlanId);
         }
     }

@@ -16,6 +16,11 @@ namespace DMReservation.Application.UseCases.DeliveryManUC
             _deliveryManRepository = deliveryManRepository;
         }
 
+        /// <summary>
+        /// Cria um cadastro de entregador
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task ExecuteAsync(CreateDeliveryManDto model)
         {
             try

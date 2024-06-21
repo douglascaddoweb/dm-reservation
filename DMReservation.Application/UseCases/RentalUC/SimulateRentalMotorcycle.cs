@@ -16,7 +16,12 @@ namespace DMReservation.Application.UseCases.RentalUC
             _planRepository = planRepository;
         }
 
-
+        /// <summary>
+        /// Realiza uma simulação para os valores de locação aproximada
+        /// </summary>
+        /// <param name="rentalMotorcycle"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<DetailSimulateRentalDto> ExecuteAsync(RentalMotorcycleDto rentalMotorcycle)
         {
             if (rentalMotorcycle.DateFinish < DateTime.Now) throw new Exception(MessageSetting.DateFinishInvalid);

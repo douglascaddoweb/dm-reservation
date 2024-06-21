@@ -25,7 +25,11 @@ namespace DMReservation.Application.UseCases.RentalUC
             _rentalRepository = rentalRepository;
         }
 
-
+        /// <summary>
+        /// Realiza a locação da motocicleta para um entregador
+        /// </summary>
+        /// <param name="rentalMotorcycle"></param>
+        /// <returns></returns>
         public async Task<DetailSimulateRentalDto> ExecuteAsync(RentalMotorcycleDto rentalMotorcycle)
         {
             try

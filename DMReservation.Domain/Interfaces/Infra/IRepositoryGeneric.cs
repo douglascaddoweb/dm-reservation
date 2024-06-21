@@ -10,5 +10,6 @@
         Task<List<TEntity>> GetAllAsync();
         void Update(TEntity entity);
         Task<bool> CommitAsync();
+        void Remove(TEntity entity);
     }
 }

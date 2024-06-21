@@ -18,6 +18,11 @@ namespace DMReservation.API.Controllers
             _simulateRentalMotorcycle = simulateRentalMotorcycle;
         }
 
+        /// <summary>
+        /// Simula o valor aproximado da locação da motocicleta.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("simulate")]
         public async Task<IActionResult> Simulate(SimulateRentalModel model)
         {
@@ -37,6 +42,11 @@ namespace DMReservation.API.Controllers
 
         }
 
+        /// <summary>
+        /// Realiza a locação de uma motocicleta.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("rental")]
         public async Task<IActionResult> Rental(SimulateRentalModel model)
         {

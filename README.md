@@ -2,6 +2,7 @@
 
 Primeiro passo para rodar o projeto deverá ser criado um banco de dados postgres e configurado a conexão no arquivo appsettings dos projetos
 DMReservation.API e DMReservation.Consumer.Worker
+
 `
     {
         ...
@@ -18,6 +19,7 @@ Nos projetos DMReservation.API e DMReservation.Consumer.Worker também será nec
 No projeto DMReservation.Consumer.Worker existe a configuração para informar o canal que deverá ser escutado para as mensagens.
 portanto para poder consumir as filas deverá ser alterado o valor final com o id da tabela deliveryman informando assim qual entregador
 recebera a mensagem.
+
 
 `
     {

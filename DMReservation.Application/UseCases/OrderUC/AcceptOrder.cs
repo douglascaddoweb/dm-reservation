@@ -1,7 +1,9 @@
 ﻿using DMReservation.Application.Interfaces.UseCases.OrderUC;
 using DMReservation.Domain.Entities;
 using DMReservation.Domain.Enums;
+using DMReservation.Domain.Exceptions;
 using DMReservation.Domain.Interfaces.Infra;
+using DMReservation.Domain.Settings;
 
 namespace DMReservation.Application.UseCases.OrderUC
 {
@@ -11,7 +13,7 @@ namespace DMReservation.Application.UseCases.OrderUC
         private readonly IOrderRepository _orderRepository;
 
 
-        public AcceptOrder( INotifyOrderRepository notifyOrderRepository, IOrderRepository orderRepository)
+        public AcceptOrder(INotifyOrderRepository notifyOrderRepository, IOrderRepository orderRepository)
         {
             _notifyOrderRepository = notifyOrderRepository;
             _orderRepository = orderRepository;
@@ -27,29 +29,34 @@ namespace DMReservation.Application.UseCases.OrderUC
         /// <exception cref="Exception"></exception>
         public async Task ExecuteAsync(int idOrder, int idDeliveryMan)
         {
-            NotifyOrder notify = await _notifyOrderRepository.GetNotifyAsync(idDeliveryMan, idOrder);
-
-            if (notify is not NotifyOrder) {
-                throw new Exception("Delivery not permitted");
-            }
-
-            
-            Order order = await _orderRepository.FindIdAsync(idOrder);
-
-            if (order.Status != StatusOrder.Available)
+            try
             {
-                throw new Exception("It is not possible to accept this delivery");
+                NotifyOrder notify = await _notifyOrderRepository.GetNotifyAsync(idDeliveryMan, idOrder);
+
+                if (notify is not NotifyOrder)
+                    throw new ApplicationBaseException(MessageSetting.PermissionDelivery, "ATOR01");
+
+                Order order = await _orderRepository.FindIdAsync(idOrder);
+
+                if (order.Status != StatusOrder.Available)
+                    throw new ApplicationBaseException(MessageSetting.AcceptNotPossible, "ATOR02");
+
+                order.AcceptDelivery();
+
+                _orderRepository.Update(order);
+
+                order.CreateOrderDelivery(notify.DeliveryMan);
+
+                await _orderRepository.CommitAsync();
             }
-
-            order.AcceptDelivery();
-            
-            _orderRepository.Update(order);
-
-            order.CreateOrderDelivery(notify.DeliveryMan);
-            
-
-            await _orderRepository.CommitAsync();
-
+            catch (ApplicationBaseException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationBaseException(ex.Message, MessageSetting.ProcessError, "GNATOR");
+            }
         }
     }
 }

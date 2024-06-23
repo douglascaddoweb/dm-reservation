@@ -2,7 +2,9 @@
 using DMReservation.Domain.DTOs;
 using DMReservation.Domain.Entities;
 using DMReservation.Domain.Enums;
+using DMReservation.Domain.Exceptions;
 using DMReservation.Domain.Interfaces.Infra;
+using DMReservation.Domain.Settings;
 
 namespace DMReservation.Application.UseCases.OrderUC
 {
@@ -42,9 +44,14 @@ namespace DMReservation.Application.UseCases.OrderUC
                     await _messageRabbit.ExecuteAsync(order.Id, deliveryMan.Id);
                 }
 
-            } catch (Exception ex)
+            } 
+            catch (ApplicationBaseException)
             {
                 throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationBaseException(ex.Message, MessageSetting.ProcessError, "GNCROR");
             }
         }
 

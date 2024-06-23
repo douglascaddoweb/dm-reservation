@@ -2,6 +2,7 @@
 using DMReservation.Application.Interfaces.UseCases.MotorcycleUC;
 using DMReservation.Domain.DTOs;
 using DMReservation.Domain.Entities;
+using DMReservation.Domain.Exceptions;
 using DMReservation.Domain.Interfaces.Infra;
 using DMReservation.Domain.Settings;
 
@@ -27,7 +28,7 @@ namespace DMReservation.Application.UseCases.MotorcycleUC
         {
             try
             {
-                if (await _motorcycleService.GetMotorcycleWithPlate(motor.LicensePlate)) throw new Exception(MessageSetting.MotorcycleRegistered);
+                if (await _motorcycleService.GetMotorcycleWithPlate(motor.LicensePlate)) throw new ApplicationBaseException(MessageSetting.MotorcycleRegistered, "CRMT");
 
                 Motorcycle motorcycle = new(motor.Year, motor.Model, motor.LicensePlate);
 
@@ -35,9 +36,13 @@ namespace DMReservation.Application.UseCases.MotorcycleUC
                 await _motorcycleRepository.CommitAsync();
 
             } 
+            catch (ApplicationBaseException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
-                throw ex;
+                throw new ApplicationBaseException(ex.Message, MessageSetting.ProcessError, "GNCRMT");
             }
         }
 

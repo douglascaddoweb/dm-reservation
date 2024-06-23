@@ -1,6 +1,8 @@
 ﻿using DMReservation.Application.Interfaces.UseCases.OrderUC;
 using DMReservation.Domain.Entities;
+using DMReservation.Domain.Exceptions;
 using DMReservation.Domain.Interfaces.Infra;
+using DMReservation.Domain.Settings;
 
 namespace DMReservation.Application.UseCases.OrderUC
 {
@@ -20,12 +22,26 @@ namespace DMReservation.Application.UseCases.OrderUC
         /// <returns></returns>
         public async Task ExecuteAsync(int idorder)
         {
-            Order order = await _orderRepository.FindIdAsync(idorder);
+            try
+            {
+                Order order = await _orderRepository.FindIdAsync(idorder);
 
-            order.Delivered();
+                if (order is not Order)
+                    throw new ApplicationBaseException(MessageSetting.RegistryNotFound, "DEOR");
 
-            _orderRepository.Update(order);
-            await _orderRepository.CommitAsync();
+                order.Delivered();
+                _orderRepository.Update(order);
+
+                await _orderRepository.CommitAsync();
+            }
+            catch (ApplicationBaseException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationBaseException(ex.Message, MessageSetting.ProcessError, "GNDEOR");
+            }
         }
     }
 }

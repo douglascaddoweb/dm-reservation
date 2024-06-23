@@ -22,16 +22,9 @@ namespace DMReservation.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(int idorder)
         {
-            try
-            {
+            List<NotifyOrderDto> notifyOrders = await _notificationService.GetAll(idorder);
 
-                List<NotifyOrderDto> notifyOrders = await _notificationService.GetAll(idorder);
-
-                return StatusCode(StatusCodes.Status200OK, notifyOrders);
-            } catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            return StatusCode(StatusCodes.Status200OK, notifyOrders);
         }
     }
 }

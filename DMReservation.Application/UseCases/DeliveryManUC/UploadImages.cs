@@ -1,5 +1,6 @@
 ﻿using DMReservation.Application.Interfaces.UseCases.DeliveryManUC;
 using DMReservation.Domain.Entities;
+using DMReservation.Domain.Exceptions;
 using DMReservation.Domain.Interfaces.Infra;
 using DMReservation.Domain.Settings;
 using Microsoft.AspNetCore.Http;
@@ -28,25 +29,36 @@ namespace DMReservation.Application.UseCases.DeliveryManUC
         /// <exception cref="Exception"></exception>
         public async Task ExecuteAsync(IFormFile file, int id)
         {
-            string format = GetFileFormat(file.FileName);
+            try
+            {
+                string format = GetFileFormat(file.FileName);
 
-            DeliveryMan delivery = await _deliveryManRepository.FindIdAsync(id);
+                DeliveryMan delivery = await _deliveryManRepository.FindIdAsync(id);
 
-            if (delivery is not DeliveryMan) throw new Exception(MessageSetting.RegistryNotFound);
+                if (delivery is not DeliveryMan) throw new ApplicationBaseException(MessageSetting.RegistryNotFound, "UPDE01");
 
-            string fileNewName = $"{Guid.NewGuid()}.{format}";
+                string fileNewName = $"{Guid.NewGuid()}.{format}";
 
-            byte[] bytesFile = ConvertFileToByteArray(file);
+                byte[] bytesFile = ConvertFileToByteArray(file);
 
-            string directory = CreateFilePath(fileNewName);
+                string directory = CreateFilePath(fileNewName);
 
-            await File.WriteAllBytesAsync(directory, bytesFile);
+                await File.WriteAllBytesAsync(directory, bytesFile);
 
-            if (!VerifyExistsImage(directory)) throw new Exception(MessageSetting.UploadImageError);
+                if (!VerifyExistsImage(directory)) throw new ApplicationBaseException(MessageSetting.UploadImageError, "UPDE02");
 
-            delivery.SetImage(fileNewName);
-            _deliveryManRepository.Update(delivery);
-            await _deliveryManRepository.CommitAsync();
+                delivery.SetImage(fileNewName);
+                _deliveryManRepository.Update(delivery);
+                await _deliveryManRepository.CommitAsync();
+            }
+            catch (ApplicationBaseException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationBaseException(ex.Message, MessageSetting.ProcessError, "GNUPDE");
+            }
         }
 
         /// <summary>
@@ -59,7 +71,7 @@ namespace DMReservation.Application.UseCases.DeliveryManUC
         {
 
             string format = filename.Split('.').Last();
-            if (!formatAcept.Contains(format)) throw new Exception(MessageSetting.FormatImageInvalid);
+            if (!formatAcept.Contains(format)) throw new ApplicationBaseException(MessageSetting.FormatImageInvalid, "UPDE03");
 
             return format;
         }
@@ -71,7 +83,7 @@ namespace DMReservation.Application.UseCases.DeliveryManUC
         /// <returns></returns>
         private byte[] ConvertFileToByteArray(IFormFile file)
         {
-            using(MemoryStream memoryStream = new MemoryStream())
+            using (MemoryStream memoryStream = new MemoryStream())
             {
                 file.CopyTo(memoryStream);
                 return memoryStream.ToArray();

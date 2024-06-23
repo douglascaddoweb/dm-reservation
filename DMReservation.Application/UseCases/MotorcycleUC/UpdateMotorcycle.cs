@@ -2,6 +2,7 @@
 using DMReservation.Application.Interfaces.UseCases.MotorcycleUC;
 using DMReservation.Domain.DTOs;
 using DMReservation.Domain.Entities;
+using DMReservation.Domain.Exceptions;
 using DMReservation.Domain.Interfaces.Infra;
 using DMReservation.Domain.Settings;
 
@@ -26,17 +27,27 @@ namespace DMReservation.Application.UseCases.MotorcycleUC
         /// <exception cref="Exception"></exception>
         public async Task ExecuteAsync(UpdateMotorcycleDto motor)
         {
-            if (await _motorcycleService.GetMotorcycleWithPlate(motor.LicensePlate)) throw new Exception(MessageSetting.MotorcycleRegistered);
+            try
+            {
+                if (await _motorcycleService.GetMotorcycleWithPlate(motor.LicensePlate)) throw new ApplicationBaseException(MessageSetting.MotorcycleRegistered, "UPMT01");
 
-            Motorcycle motorcycle = await _motorcycleRepository.FindIdAsync(motor.Id);
+                Motorcycle motorcycle = await _motorcycleRepository.FindIdAsync(motor.Id);
 
-            if (motorcycle == null) throw new Exception(MessageSetting.RegistryNotFound);
+                if (motorcycle == null) throw new ApplicationBaseException(MessageSetting.RegistryNotFound, "UPMT02");
 
-            motorcycle.ChangeLicensePlate(motor.LicensePlate);
+                motorcycle.ChangeLicensePlate(motor.LicensePlate);
 
-            _motorcycleRepository.Update(motorcycle);
+                _motorcycleRepository.Update(motorcycle);
 
-            await _motorcycleRepository.CommitAsync();
+                await _motorcycleRepository.CommitAsync();
+            } catch (ApplicationBaseException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationBaseException(ex.Message, MessageSetting.ProcessError, "GNUPMT");
+            }
         }
     }
 }

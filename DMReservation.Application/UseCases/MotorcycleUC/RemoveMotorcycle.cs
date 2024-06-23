@@ -1,6 +1,8 @@
 ﻿using DMReservation.Application.Interfaces.UseCases.MotorcycleUC;
 using DMReservation.Domain.Entities;
+using DMReservation.Domain.Exceptions;
 using DMReservation.Domain.Interfaces.Infra;
+using DMReservation.Domain.Settings;
 
 namespace DMReservation.Application.UseCases.MotorcycleUC
 {
@@ -11,7 +13,6 @@ namespace DMReservation.Application.UseCases.MotorcycleUC
         public RemoveMotorcycle(IMotorcycleRepository motorcycleRepository)
         {
             _motorcycleRepository = motorcycleRepository;
-            
         }
 
         /// <summary>
@@ -22,16 +23,25 @@ namespace DMReservation.Application.UseCases.MotorcycleUC
         /// <exception cref="Exception"></exception>
         public async Task ExecuteAsync(int idmotorcycle)
         {
-            Motorcycle motorcycle = await _motorcycleRepository.GetMotorcycleWithRentalsAsync(idmotorcycle);
+            try
+            {
+                Motorcycle motorcycle = await _motorcycleRepository.GetMotorcycleWithRentalsAsync(idmotorcycle);
 
-            if (motorcycle.Rentals.Any()) {
-                throw new Exception("It is not possible to delete the motorcycle");
+                if (motorcycle.Rentals.Any())
+                    throw new ApplicationBaseException(MessageSetting.RemoveMotorcycle, "RMMT");
+
+                _motorcycleRepository.Remove(motorcycle);
+
+                await _motorcycleRepository.CommitAsync();
             }
-
-            _motorcycleRepository.Remove(motorcycle);
-
-            await _motorcycleRepository.CommitAsync();
-
+            catch (ApplicationBaseException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationBaseException(ex.Message, MessageSetting.ProcessError, "GNRMMT");
+            }
         }
     }
 }

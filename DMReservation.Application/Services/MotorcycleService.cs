@@ -11,6 +11,7 @@ namespace DMReservation.Application.Services
         {
             _motorcycleRepository = motorcycleRepository;
         }
+
         public async Task<bool> GetMotorcycleWithPlate(string licenseplate)
         {
             return await _motorcycleRepository.VerifyMotorcycleExistAsync(licenseplate);

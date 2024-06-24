@@ -1,4 +1,5 @@
 ﻿using DMReservation.API.Model;
+using DMReservation.API.Model.Attibutes;
 using DMReservation.Application.Interfaces.UseCases.MotorcycleUC;
 using DMReservation.Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -34,16 +35,9 @@ namespace DMReservation.API.Controllers
         [HttpGet("search")]
         public async Task<IActionResult> GetMotorcycle(string? plate)
         {
-            try
-            {
-                List<ListMotorcycleDto> motors = await _searchMotorcycle.ExecuteAsync(plate);
+            List<ListMotorcycleDto> motors = await _searchMotorcycle.ExecuteAsync(plate);
 
-                return StatusCode(StatusCodes.Status200OK, motors);
-
-            } catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            return StatusCode(StatusCodes.Status200OK, motors);
         }
 
         /// <summary>
@@ -54,27 +48,18 @@ namespace DMReservation.API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Post(CreateMotorcycle model)
         {
-            try
+            ModelState.ValidateModel();
+
+            CreateMotorcycleDto motor = new CreateMotorcycleDto
             {
-                if (!ModelState.IsValid) {
-                    return StatusCode(StatusCodes.Status400BadRequest, ModelState);
-                }
+                LicensePlate = model.LicensePlate,
+                Model = model.Model,
+                Year = model.Year
+            };
 
-                CreateMotorcycleDto motor = new CreateMotorcycleDto
-                {
-                    LicensePlate = model.LicensePlate,
-                    Model = model.Model,
-                    Year = model.Year
-                };
+            MotorcycleDto motorcycle = await _createMotorcycle.ExecuteAsync(motor);
 
-                await _createMotorcycle.ExecuteAsync(motor);
-
-                return StatusCode(StatusCodes.Status201Created);
-
-            } catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            return StatusCode(StatusCodes.Status201Created, motorcycle);            
         }
 
         /// <summary>
@@ -86,26 +71,12 @@ namespace DMReservation.API.Controllers
         [HttpPatch("update")]
         public async Task<IActionResult> Patch(UpdateMotorcycleModel model, int id)
         {
-            try
-            {
-                if (!ModelState.IsValid) {
-                    return StatusCode(StatusCodes.Status400BadRequest, ModelState);
-                }
+            ModelState.ValidateModel();
 
-                UpdateMotorcycleDto motor = new UpdateMotorcycleDto
-                {
-                    LicensePlate = model.LicensePlate,
-                    Id = id
-                };
+            UpdateMotorcycleDto motor = new UpdateMotorcycleDto(id, model.LicensePlate);
 
-                await _updateMotorcycle.ExecuteAsync(motor);
-
-                return StatusCode(StatusCodes.Status204NoContent);
-
-            } catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            MotorcycleDto motorcycle = await _updateMotorcycle.ExecuteAsync(motor);
+            return StatusCode(StatusCodes.Status204NoContent, motorcycle);
         }
 
         
@@ -118,19 +89,10 @@ namespace DMReservation.API.Controllers
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                await _removeMotorcycle.ExecuteAsync(id);
+            await _removeMotorcycle.ExecuteAsync(id);
 
-                return StatusCode(StatusCodes.Status204NoContent);
+            return StatusCode(StatusCodes.Status204NoContent);
 
-            } catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
         }
-
-
-
     }
 }

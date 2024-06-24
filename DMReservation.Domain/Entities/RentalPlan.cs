@@ -14,5 +14,13 @@
         {
             
         }
+
+        public RentalPlan(short days, decimal price, decimal fine, decimal extraPrice)
+        {
+            Days = days;
+            Price = price;
+            Fine = fine;
+            ExtraPrice = extraPrice;
+        }
     }
 }

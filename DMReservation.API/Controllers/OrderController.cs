@@ -1,4 +1,5 @@
 ﻿using DMReservation.API.Model;
+using DMReservation.API.Model.Attibutes;
 using DMReservation.Application.Interfaces.UseCases.OrderUC;
 using DMReservation.Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ namespace DMReservation.API.Controllers
         private readonly IAcceptOrder _acceptOrder;
         private readonly IDeliveredOrder _deliveredOrder;
 
-        public OrderController(ICreateOrder createOrder, 
+        public OrderController(ICreateOrder createOrder,
             IAcceptOrder acceptOrder,
             IDeliveredOrder deliveredOrder)
         {
@@ -31,21 +32,11 @@ namespace DMReservation.API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Post(CreateOrderModel model)
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return StatusCode(StatusCodes.Status400BadRequest, model);
-                }
+            ModelState.ValidateModel();
 
-                await _createOrder.ExecuteAsync(new CreateOrderDto(model.Price));
+            await _createOrder.ExecuteAsync(new CreateOrderDto(model.Price));
 
-                return StatusCode(StatusCodes.Status201Created);
-
-            } catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            return StatusCode(StatusCodes.Status201Created);
         }
 
         /// <summary>
@@ -57,16 +48,9 @@ namespace DMReservation.API.Controllers
         [HttpPatch("accept")]
         public async Task<IActionResult> Patch(int iddeliveryMan, int idorder)
         {
-            try
-            {
-                await _acceptOrder.ExecuteAsync(idorder, iddeliveryMan);
+            await _acceptOrder.ExecuteAsync(idorder, iddeliveryMan);
 
-                return StatusCode(StatusCodes.Status204NoContent);
-
-            } catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            return StatusCode(StatusCodes.Status204NoContent);
         }
 
         /// <summary>
@@ -77,16 +61,9 @@ namespace DMReservation.API.Controllers
         [HttpPatch("delivered")]
         public async Task<IActionResult> DeliveredOrder(int idorder)
         {
-            try
-            {
-                await _deliveredOrder.ExecuteAsync(idorder);
+            await _deliveredOrder.ExecuteAsync(idorder);
 
-                return StatusCode(StatusCodes.Status204NoContent);
-
-            } catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            return StatusCode(StatusCodes.Status204NoContent);
         }
 
     }

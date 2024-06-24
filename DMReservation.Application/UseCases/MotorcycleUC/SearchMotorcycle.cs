@@ -2,7 +2,9 @@
 using DMReservation.Application.Interfaces.UseCases.MotorcycleUC;
 using DMReservation.Domain.DTOs;
 using DMReservation.Domain.Entities;
+using DMReservation.Domain.Exceptions;
 using DMReservation.Domain.Interfaces.Infra;
+using DMReservation.Domain.Settings;
 
 namespace DMReservation.Application.UseCases.MotorcycleUC
 {
@@ -24,9 +26,23 @@ namespace DMReservation.Application.UseCases.MotorcycleUC
         /// <returns></returns>
         public async Task<List<ListMotorcycleDto>> ExecuteAsync(string plate) 
         {
-            List<Motorcycle> motors = await _motorcycleRepository.GetAllWithLicensePlateAsync(plate);
+            try
+            {
+                List<Motorcycle> motors = await _motorcycleRepository.GetAllWithLicensePlateAsync(plate);
 
-            return _mapper.Map<List<ListMotorcycleDto>>(motors);
+                return _mapper.Map<List<ListMotorcycleDto>>(motors);
+            } 
+            catch (AutoMapperMappingException ex) { 
+                throw new ApplicationBaseException(ex.Message, "MAP"); 
+            }
+            catch (ApplicationBaseException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationBaseException(ex.Message, MessageSetting.ProcessError, "GNSEMT");
+            }
 
         }
     }

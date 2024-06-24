@@ -44,7 +44,7 @@ namespace RMReservation.Test.Applications.UseCases.MotorcycleTests
             // Asserts
             result.Year.ShouldBe(model.Year);
             result.LicensePlate.Value.ShouldBe(model.LicensePlate);
-            result.Model.ShouldBe(model.Model);
+            result.Model.ShouldBe(model.Model.ToUpper());
         }
 
         /// <summary>

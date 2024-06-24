@@ -10,6 +10,6 @@ namespace DMReservation.Application.Interfaces.UseCases.DeliveryManUC
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        Task ExecuteAsync(CreateDeliveryManDto model);
+        Task<DeliveryManDto> ExecuteAsync(CreateDeliveryManDto model);
     }
 }

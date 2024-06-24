@@ -10,6 +10,6 @@ namespace DMReservation.Application.Interfaces.UseCases.MotorcycleUC
         /// <param name="motor"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        Task ExecuteAsync(UpdateMotorcycleDto motor);
+        Task<MotorcycleDto> ExecuteAsync(UpdateMotorcycleDto motor);
     }
 }

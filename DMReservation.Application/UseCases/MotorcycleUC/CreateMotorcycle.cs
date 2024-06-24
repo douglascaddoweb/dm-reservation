@@ -1,4 +1,5 @@
-﻿using DMReservation.Application.Interfaces.Services;
+﻿using AutoMapper;
+using DMReservation.Application.Interfaces.Services;
 using DMReservation.Application.Interfaces.UseCases.MotorcycleUC;
 using DMReservation.Domain.DTOs;
 using DMReservation.Domain.Entities;
@@ -12,11 +13,15 @@ namespace DMReservation.Application.UseCases.MotorcycleUC
     {
         private readonly IMotorcycleRepository _motorcycleRepository;
         private readonly IMotorcycleService _motorcycleService;
+        private readonly IMapper _mapper;
 
-        public CreateMotorcycle(IMotorcycleRepository motorcycleRepository, IMotorcycleService motorcycleService)
+        public CreateMotorcycle(IMotorcycleRepository motorcycleRepository, 
+            IMotorcycleService motorcycleService,
+            IMapper mapper)
         {
             _motorcycleRepository = motorcycleRepository;
             _motorcycleService = motorcycleService;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -24,7 +29,7 @@ namespace DMReservation.Application.UseCases.MotorcycleUC
         /// </summary>
         /// <param name="motor"></param>
         /// <returns></returns>
-        public async Task ExecuteAsync(CreateMotorcycleDto motor)
+        public async Task<MotorcycleDto> ExecuteAsync(CreateMotorcycleDto motor)
         {
             try
             {
@@ -34,7 +39,7 @@ namespace DMReservation.Application.UseCases.MotorcycleUC
 
                 await _motorcycleRepository.AddAsync(motorcycle);
                 await _motorcycleRepository.CommitAsync();
-
+                return _mapper.Map<MotorcycleDto>(motorcycle);
             } 
             catch (ApplicationBaseException)
             {

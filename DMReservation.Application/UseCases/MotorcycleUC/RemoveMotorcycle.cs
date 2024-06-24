@@ -27,8 +27,11 @@ namespace DMReservation.Application.UseCases.MotorcycleUC
             {
                 Motorcycle motorcycle = await _motorcycleRepository.GetMotorcycleWithRentalsAsync(idmotorcycle);
 
-                if (motorcycle.Rentals.Any())
-                    throw new ApplicationBaseException(MessageSetting.RemoveMotorcycle, "RMMT");
+                if (motorcycle is not Motorcycle)
+                    throw new ApplicationBaseException(MessageSetting.RegistryNotFound, "RMMT01");
+
+                if (motorcycle.Rentals is IReadOnlyCollection<Rental> && motorcycle.Rentals.Count >= 1)
+                    throw new ApplicationBaseException(MessageSetting.RemoveMotorcycle, "RMMT01");
 
                 _motorcycleRepository.Remove(motorcycle);
 

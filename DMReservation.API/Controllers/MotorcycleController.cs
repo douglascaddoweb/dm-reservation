@@ -57,9 +57,9 @@ namespace DMReservation.API.Controllers
                 Year = model.Year
             };
 
-            await _createMotorcycle.ExecuteAsync(motor);
+            MotorcycleDto motorcycle = await _createMotorcycle.ExecuteAsync(motor);
 
-            return StatusCode(StatusCodes.Status201Created);            
+            return StatusCode(StatusCodes.Status201Created, motorcycle);            
         }
 
         /// <summary>
@@ -73,14 +73,10 @@ namespace DMReservation.API.Controllers
         {
             ModelState.ValidateModel();
 
-            UpdateMotorcycleDto motor = new UpdateMotorcycleDto
-            {
-                LicensePlate = model.LicensePlate,
-                Id = id
-            };
+            UpdateMotorcycleDto motor = new UpdateMotorcycleDto(id, model.LicensePlate);
 
-            await _updateMotorcycle.ExecuteAsync(motor);
-            return StatusCode(StatusCodes.Status204NoContent);
+            MotorcycleDto motorcycle = await _updateMotorcycle.ExecuteAsync(motor);
+            return StatusCode(StatusCodes.Status204NoContent, motorcycle);
         }
 
         

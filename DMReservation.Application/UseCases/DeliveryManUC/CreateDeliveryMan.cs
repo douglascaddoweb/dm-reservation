@@ -1,4 +1,5 @@
-﻿using DMReservation.Application.Interfaces.UseCases.DeliveryManUC;
+﻿using AutoMapper;
+using DMReservation.Application.Interfaces.UseCases.DeliveryManUC;
 using DMReservation.Domain.DTOs;
 using DMReservation.Domain.Entities;
 using DMReservation.Domain.Exceptions;
@@ -11,10 +12,12 @@ namespace DMReservation.Application.UseCases.DeliveryManUC
     public class CreateDeliveryMan : ICreateDeliveryMan
     {
         private readonly IDeliveryManRepository _deliveryManRepository;
+        private readonly IMapper _mapper;
 
-        public CreateDeliveryMan(IDeliveryManRepository deliveryManRepository)
+        public CreateDeliveryMan(IDeliveryManRepository deliveryManRepository, IMapper mapper)
         {
             _deliveryManRepository = deliveryManRepository;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -22,7 +25,7 @@ namespace DMReservation.Application.UseCases.DeliveryManUC
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task ExecuteAsync(CreateDeliveryManDto model)
+        public async Task<DeliveryManDto> ExecuteAsync(CreateDeliveryManDto model)
         {
             try
             {
@@ -44,6 +47,7 @@ namespace DMReservation.Application.UseCases.DeliveryManUC
 
                 await _deliveryManRepository.AddAsync(delivery);
                 await _deliveryManRepository.CommitAsync();
+                return _mapper.Map<DeliveryManDto>(delivery);
             }
             catch (ApplicationBaseException)
             {

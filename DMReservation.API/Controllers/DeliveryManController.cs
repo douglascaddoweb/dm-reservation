@@ -32,9 +32,9 @@ namespace DMReservation.API.Controllers
 
             CreateDeliveryManDto deliveryMan = new CreateDeliveryManDto(model.Name, model.Cnpj, model.BirthDate, model.Cnh, model.TypeCnh);
                 
-            await _createDeliveryMan.ExecuteAsync(deliveryMan);
+            DeliveryManDto deliveryman = await _createDeliveryMan.ExecuteAsync(deliveryMan);
 
-            return StatusCode(StatusCodes.Status201Created);
+            return StatusCode(StatusCodes.Status201Created, deliveryman);
         }
 
         /// <summary>

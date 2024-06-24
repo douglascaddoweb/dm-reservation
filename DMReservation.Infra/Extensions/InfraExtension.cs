@@ -21,10 +21,12 @@ namespace DMReservation.Infra.Extensions
                 cfg.CreateMap<CreateMotorcycleDto, Motorcycle>().ReverseMap();
                 cfg.CreateMap<OrderDto, Order>().ReverseMap();
                 cfg.CreateMap<DeliveryManDto, DeliveryMan>().ReverseMap();
+                cfg.CreateMap<MotorcycleDto, Motorcycle>().ReverseMap();
                 cfg.CreateMap<NotifyOrderDto, NotifyOrder>().ReverseMap();
                 
-                cfg.CreateMap<CnpjDto, Cnpj>().ReverseMap();
                 cfg.CreateMap<CnhDto, Cnh>().ReverseMap();
+                cfg.CreateMap<CnpjDto, Cnpj>().ReverseMap();
+                cfg.CreateMap<LicensePlateDto, LicensePlate>().ReverseMap();
             });
 
             IMapper mapper = config.CreateMapper();

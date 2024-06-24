@@ -20,5 +20,6 @@
         public static string AnythingMotorcyleToRent = "Don't have any motorcycle to rent.";
         public static string DeliveryManNotFound = "Not found any delivery man";
         public static string DeliveryManNotHabilit = "Delivery man can't drive motorcycle.";
+        public static string LincensePlateInvalid = "License Plate invalid.";
     }
 }

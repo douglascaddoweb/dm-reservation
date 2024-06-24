@@ -45,7 +45,7 @@ namespace DMReservation.Application.UseCases.RentalUC
                 if (deliveryMan is not DeliveryMan)
                     throw new ApplicationBaseException(MessageSetting.DeliveryManNotFound, "RLMT02");
 
-                if (deliveryMan.TypeCnh.Value == "B")
+                if (!deliveryMan.TypeCnh.IsValid)
                     throw new ApplicationBaseException(MessageSetting.DeliveryManNotHabilit, "RLMT03");
 
                 if (rentalMotorcycle.DateFinish < DateTime.Now)
@@ -55,7 +55,7 @@ namespace DMReservation.Application.UseCases.RentalUC
 
                 RentalPlan rentalPlan = await _planRepository.GetMaxDaysPlanAsync();
 
-                if (rentalPlan.Days > days.Days)
+                if (rentalPlan is not RentalPlan || rentalPlan.Days > days.Days)
                     rentalPlan = await _planRepository.GetRentalPlanAsync(days.Days);
 
                 if (rentalPlan is not RentalPlan)

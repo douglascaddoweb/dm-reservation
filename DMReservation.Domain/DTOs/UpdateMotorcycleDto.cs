@@ -1,12 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace DMReservation.Domain.DTOs
+﻿namespace DMReservation.Domain.DTOs
 {
-    public class UpdateMotorcycleDto
-    {
-        [Required]
-        public int Id { get; set; }
-        [Required]
-        public string LicensePlate { get; set; }
-    }
+    public record UpdateMotorcycleDto(int Id, string LicensePlate);
 }

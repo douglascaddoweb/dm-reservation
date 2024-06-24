@@ -23,7 +23,7 @@ namespace DMReservation.Infra.Repositories
                 return await _entities.ToListAsync();
             }
 
-            return await _entities.Where(w => w.LicensePlate == licensePlate).ToListAsync();
+            return await _entities.Where(w => w.LicensePlate.Value == licensePlate).ToListAsync();
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace DMReservation.Infra.Repositories
         /// <returns></returns>
         public async Task<bool> VerifyMotorcycleExistAsync(string licenseplate)
         {
-            return await _entities.AnyAsync(x => x.LicensePlate == licenseplate);
+            return await _entities.AnyAsync(x => x.LicensePlate.Value == licenseplate);
         }
 
         /// <summary>
